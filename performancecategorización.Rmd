@@ -1,0 +1,76 @@
+---
+title: Performance por categorización
+output:
+  pdf_document: default
+  fig_caption: yes
+  
+header-includes: \usepackage{float}
+---
+
+*Reporte generado automáticamente en base a la data del dashboard distribuidoras.*
+
+```{r FIG1 setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(kableExtra)
+library(tidyverse)
+library(tinytex)
+library(knitr)
+library(readxl)
+library(ggplot2)
+library(lubridate)
+library(colorspace)
+data<-read_xlsx("C:/Users/User/Documents/datapresentacion.xlsx")
+tabla<-data %>% select(-3) %>% select(-1)
+for (i in 3:8) {
+  tabla[,i]<-tabla[,i]*100
+  
+}
+for (i in 1:5) {
+  tabla[i,1]<-substr(tabla[i,1],5,nchar(tabla[i,1])-4)
+}
+
+for (i in 6:10) {
+  tabla[i,1]<-substr(tabla[i,1],5,nchar(tabla[i,1])-4)
+}
+for (i in 16:19) {
+  tabla[i,1]<-substr(tabla[i,1],5,nchar(tabla[i,1]))
+}
+
+```
+
+```{r cars, echo=FALSE, fig.pos="H"}
+
+tabla %>%
+  kbl(booktabs = TRUE,caption = paste0("Performance por categorización al ",today())) %>%
+  kable_styling(font_size = 8) %>% 
+  pack_rows(index = c("RR MM Lima Azul"=5,
+                      "RR MM Lima Rojo"=5,
+                      "RR MM Provincias"=5,
+                      "VENDEDORES Lima"=4)) %>% 
+  row_spec(0,bold=T) %>% 
+  footnote(number=c("Fecha de actualización fuente Lansier - Metronic: 27 de Octubre","Fecha de actualización fuente Distribuidoras: 25 de Octubre","Equipo azul no tiene presupuesto en categoría Lanzamiento",
+                      "Los valores estan en porcentajes")) %>% 
+  kable_styling(latex_options = "HOLD_position") %>% 
+ column_spec(3, color = "black",bold=T, background = ifelse(tabla$Total > 100, "green", ifelse(tabla$Total<80,"red","yellow")))
+   
+        
+              
+
+ 
+
+```
+
+```{r echo=FALSE,fig.pos="H"}
+data %>%
+  mutate(Total=Total*100) %>% 
+  ggplot(aes(x=reorder(Nombre,Total),y=Total))+
+  geom_bar(stat = "identity",color="black",fill="steelblue")+
+  coord_flip()+labs(x="",y="",title = "Porcentaje de cumplimiento por zona")+
+  theme_minimal()+
+  geom_text(aes(label=Total), hjust=-0.15, size=2.6)+
+  geom_hline(yintercept = 100,linetype="dotted",color="black")+
+  geom_text(aes(0,100,label = 100, vjust = 0),
+            size=3,
+            colour="black"
+            )
+```
