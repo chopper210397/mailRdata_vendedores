@@ -1,0 +1,125 @@
+---
+title: Performance por categoría 
+author: Ricardo Chimpen
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  fig_caption: yes
+  
+header-includes: \usepackage{float}
+---
+
+*Reporte generado automáticamente en base a la data del dashboard distribuidoras.*
+
+```{r FIG1 setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(kableExtra)
+library(tidyverse)
+library(tinytex)
+library(knitr)
+library(readxl)
+library(ggplot2)
+library(lubridate)
+data<-read_xlsx("C:/Users/User/Documents/datapresentacion.xlsx")
+tabla<-data %>% select(-3) %>% select(-1)
+for (i in 3:8) {
+  tabla[,i]<-tabla[,i]*100
+  
+}
+for (i in 1:5) {
+  tabla[i,1]<-substr(tabla[i,1],5,nchar(tabla[i,1])-4)
+}
+
+for (i in 6:10) {
+  tabla[i,1]<-substr(tabla[i,1],5,nchar(tabla[i,1])-4)
+}
+for (i in 16:19) {
+  tabla[i,1]<-substr(tabla[i,1],5,nchar(tabla[i,1]))
+}
+
+```
+
+```{r echo=FALSE}
+
+
+minimos<-c(  paste0(min(tabla$Total)," = ",tabla[which(tabla$Total==min(tabla$Total)),2]),
+       
+paste0(min(tabla$Premium)," = ",tabla[which(tabla$Premium==min(tabla$Premium)),2]),
+paste0(min(tabla$Lanzamiento)," = ",tabla[which(tabla$Lanzamiento==min(tabla$Lanzamiento)),2]),
+paste0(min(tabla$Ocuvial)," = ",tabla[which(tabla$Ocuvial==min(tabla$Ocuvial)),2]),
+paste0(min(tabla$Normal)," = ",tabla[which(tabla$Normal==min(tabla$Normal)),2]),
+paste0(min(tabla$Masivo)," = ",tabla[which(tabla$Masivo ==min(tabla$Masivo)),2])  )
+
+
+
+```
+
+```{r echo=FALSE}
+maximos<-c(  paste0(max(tabla$Total)," = ",tabla[which(tabla$Total==max(tabla$Total)),2]),
+       
+paste0(max(tabla$Premium)," = ",tabla[which(tabla$Premium==max(tabla$Premium)),2]),
+paste0(max(tabla$Lanzamiento)," = ",tabla[which(tabla$Lanzamiento==max(tabla$Lanzamiento)),2]),
+paste0(max(tabla$Ocuvial)," = ",tabla[which(tabla$Ocuvial==max(tabla$Ocuvial)),2]),
+paste0(max(tabla$Normal)," = ",tabla[which(tabla$Normal==max(tabla$Normal)),2]),
+paste0(max(tabla$Masivo)," = ",tabla[which(tabla$Masivo ==max(tabla$Masivo)),2])  )
+
+
+```
+
+```{r echo=FALSE,fig.pos="H"}
+categorias<-c("Total","Premium","Lanzamiento","Ocuvial","Normal","Masivo")
+minimax<-cbind(categorias,minimos,maximos)
+minimax %>% kbl(caption = "Mínimos y Máximos por categoria") %>% 
+  kable_styling(latex_options = c("striped", "scale_down","HOLD_position")) %>%
+  footnote(number = c("Si aparece mas de un nombre en una fila es porque mas de una persona comparte el mismo valor maximo o minimo",
+                      "Los valores estan en porcentajes"))
+
+
+```
+
+```{r cars, echo=FALSE, fig.pos="H"}
+
+tabla %>%
+  kbl(booktabs = TRUE,caption = paste0("Performance por categoria al ",today())) %>%
+  kable_styling(font_size = 8) %>% 
+  pack_rows(index = c("RR MM Lima Azul"=5,
+                      "RR MM Lima Rojo"=5,
+                      "RR MM Provincias"=5,
+                      "VENDEDORES Lima"=4)) %>% 
+  row_spec(0,bold=T) %>% 
+  footnote(general = "Los valores estan en porcentajes")  %>%
+  column_spec(3, color = "white",bold = T,
+              background = spec_color(tabla$Total[1:19],
+                                      end = 0.6,
+                                      option = "E")) %>% 
+  kable_styling(latex_options = "HOLD_position")
+   
+        
+              
+
+ 
+
+```
+
+```{r echo=FALSE,fig.pos="H"}
+data %>%
+  mutate(Total=Total*100) %>% 
+  ggplot(aes(x=reorder(Zona,Total),y=Total))+
+  geom_bar(stat = "identity",color="black",fill="steelblue")+
+  coord_flip()+labs(x="Total",y="Zona",title = "Total por zona")+
+  theme_minimal()
+```
+
+```{r echo=FALSE,fig.pos="H"}
+ggplot(data = stack(data[1:19,5:10]), aes(x = ind, y = values)) +
+  stat_boxplot(geom = "errorbar", # Bigotes
+               width = 0.2) +
+  geom_boxplot(fill = "#4271AE", colour = "#1F3552", # Colores
+               alpha = 0.9, outlier.colour = "red") +
+  scale_y_continuous(name = "Porcentaje") +  # Etiqueta de la variable continua
+  scale_x_discrete(name = "Categoría") +        # Etiqueta de los grupos
+  ggtitle("Boxplot ") +   # Título del plot
+  theme(axis.line = element_line(colour = "black", # Personalización del tema
+                                 size = 0.25))
+
+```
