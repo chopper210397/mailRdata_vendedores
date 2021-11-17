@@ -13,7 +13,7 @@
 #################################################################################################
 #################################################################################################
 #################################################################################################
-
+# 15/11/2021 LE ESTOY AGREGANDO LOS ELIMINAR <> E A TODOS EXCEPTO VENDEDORES-
 
 
 library(writexl)
@@ -80,9 +80,7 @@ sqlcomercial<-odbcConnect("SQLuis",uid = "sa",pwd = "Comercial.2020") ##
 ##########################################################################################
 
 #LIMA CALLAO
-azullimacallao<-sqlQuery(sqlcomercial,
-                                "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and colorequi<>'ROJO' and dsczona='LIMA CALLAO' and flag<>'k'  
-                                ")
+azullimacallao<-sqlQuery(sqlcomercial,paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA CALLAO' and flag<>'k'and eliminar<>'E' "))
 
 azullimacallao[is.na(azullimacallao)] <- 0
 
@@ -92,7 +90,7 @@ azullimacallao<-azullimacallao %>%
 
 azullimacallao<-azullimacallao %>%
   add_row(soles=sum(azullimacallao$soles),categorizacion="TOTALES",ppsol=sum(azullimacallao$ppsol))
-  
+
 azullimacallao<-azullimacallao %>% 
   mutate(ratio=soles/ppsol*100) %>%
   select(categorizacion,ratio) 
@@ -100,11 +98,9 @@ azullimacallao<-azullimacallao %>%
 colnames(azullimacallao)<-c("categorizacion","azullimacallao")
 
 
-  
-  #LIMA ESTE
-azullimaeste<-sqlQuery(sqlcomercial,
-                         "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and colorequi<>'ROJO' and dsczona='LIMA este' and flag<>'k'  
-                                ")
+
+#LIMA ESTE
+azullimaeste<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA este' and flag<>'k'and eliminar<>'E'  "))
 
 azullimaeste[is.na(azullimaeste)] <- 0
 
@@ -122,9 +118,7 @@ azullimaeste<-azullimaeste %>%
 colnames(azullimaeste)<-c("categorizacion","azullimaeste")
 
 #LIMA NORTE
-azullimanorte<-sqlQuery(sqlcomercial,
-                       "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and colorequi<>'ROJO' and dsczona='LIMA norte' and flag<>'k'  
-                                ")
+azullimanorte<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA norte' and flag<>'k'and eliminar<>'E' "))
 
 azullimanorte[is.na(azullimanorte)] <- 0
 
@@ -142,9 +136,8 @@ azullimanorte<-azullimanorte %>%
 colnames(azullimanorte)<-c("categorizacion","azullimanorte")
 
 #LIMA OESTE
-azullimaoeste<-sqlQuery(sqlcomercial,
-                        "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and colorequi<>'ROJO' and dsczona='LIMA oeste' and flag<>'k'  
-                                ")
+azullimaoeste<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA oeste' and flag<>'k'and eliminar<>'E' "))
+
 
 azullimaoeste[is.na(azullimaoeste)] <- 0
 
@@ -162,9 +155,8 @@ azullimaoeste<-azullimaoeste %>%
 colnames(azullimaoeste)<-c("categorizacion","azullimaoeste")
 
 #LIMA SUR
-azullimasur<-sqlQuery(sqlcomercial,
-                        "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and colorequi<>'ROJO' and dsczona='LIMA sur' and flag<>'k'  
-                                ")
+azullimasur<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA sur' and flag<>'k'and eliminar<>'E' "))
+
 
 azullimasur[is.na(azullimasur)] <- 0
 
@@ -187,9 +179,9 @@ colnames(azullimasur)<-c("categorizacion","azullimasur")
 ##########################################################################################
 ##########################################################################################
 #LIMA CALLAO
-rojolimacallao<-sqlQuery(sqlcomercial,
-                         "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and colorequi<>'AZUL' and dsczona='LIMA CALLAO' and flag<>'k'  
-                                ")
+rojolimacallao<-sqlQuery(sqlcomercial,paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA CALLAO' and flag<>'k' and eliminar<>'E'") )
+
+
 
 rojolimacallao[is.na(rojolimacallao)] <- 0
 
@@ -207,9 +199,9 @@ rojolimacallao<-rojolimacallao %>%
 colnames(rojolimacallao)<-c("categorizacion","rojolimacallao")
 
 #LIMA ESTE
-rojolimaeste<-sqlQuery(sqlcomercial,
-                       "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and colorequi<>'AZUL' and dsczona='LIMA este' and flag<>'k'  
-                                ")
+rojolimaeste<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA este' and flag<>'k' and eliminar<>'E'"))
+
+
 
 rojolimaeste[is.na(rojolimaeste)] <- 0
 
@@ -227,9 +219,9 @@ rojolimaeste<-rojolimaeste %>%
 colnames(rojolimaeste)<-c("categorizacion","rojolimaeste")
 
 #LIMA NORTE
-rojolimanorte<-sqlQuery(sqlcomercial,
-                        "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and colorequi<>'AZUL' and dsczona='LIMA norte' and flag<>'k'  
-                                ")
+rojolimanorte<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA norte' and flag<>'k' and eliminar<>'E'")  )
+
+
 
 rojolimanorte[is.na(rojolimanorte)] <- 0
 
@@ -247,9 +239,9 @@ rojolimanorte<-rojolimanorte %>%
 colnames(rojolimanorte)<-c("categorizacion","rojolimanorte")
 
 #LIMA OESTE
-rojolimaoeste<-sqlQuery(sqlcomercial,
-                        "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and colorequi<>'AZUL' and dsczona='LIMA oeste' and flag<>'k'  
-                                ")
+rojolimaoeste<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA oeste' and flag<>'k' and eliminar<>'E'"))
+
+
 
 rojolimaoeste[is.na(rojolimaoeste)] <- 0
 
@@ -267,9 +259,9 @@ rojolimaoeste<-rojolimaoeste %>%
 colnames(rojolimaoeste)<-c("categorizacion","rojolimaoeste")
 
 #LIMA SUR
-rojolimasur<-sqlQuery(sqlcomercial,
-                      "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and colorequi<>'AZUL' and dsczona='LIMA sur' and flag<>'k'  
-                                ")
+rojolimasur<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA sur' and flag<>'k' and eliminar<>'E'") )
+
+
 
 rojolimasur[is.na(rojolimasur)] <- 0
 
@@ -298,9 +290,8 @@ colnames(rojolimasur)<-c("categorizacion","rojolimasur")
 
 #NORTE GRANDE A
 
-nortegrandea<-sqlQuery(sqlcomercial,
-                      "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and dsczona='NORTE GRANDE A' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and flag<>'k'  
-                                ")
+nortegrandea<-sqlQuery(sqlcomercial, paste("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='NORTE GRANDE A' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and flag<>'k' and eliminar<>'E'"))
+
 
 nortegrandea[is.na(nortegrandea)] <- 0
 
@@ -319,9 +310,9 @@ colnames(nortegrandea)<-c("categorizacion","nortegrandea")
 
 #NORTE GRANDE B
 
-nortegrandeb<-sqlQuery(sqlcomercial,
-                       "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and dsczona='NORTE GRANDE B' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and flag<>'k'  
-                                ")
+nortegrandeb<-sqlQuery(sqlcomercial, paste0( "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='NORTE GRANDE B' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and flag<>'k' and eliminar<>'E'  "))
+
+
 
 nortegrandeb[is.na(nortegrandeb)] <- 0
 
@@ -340,9 +331,9 @@ colnames(nortegrandeb)<-c("categorizacion","nortegrandeb")
 
 #NORTE MEDIO
 
-nortemedio<-sqlQuery(sqlcomercial,
-                       "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and dsczona='NORTE MEDIO' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and flag<>'k'  
-                                ")
+nortemedio<-sqlQuery(sqlcomercial, paste0( "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='NORTE MEDIO' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and flag<>'k' and eliminar<>'E'"))
+
+
 
 nortemedio[is.na(nortemedio)] <- 0
 
@@ -360,9 +351,9 @@ nortemedio<-nortemedio %>%
 colnames(nortemedio)<-c("categorizacion","nortemedio")
 
 #SUR GRANDE
-surgrande<-sqlQuery(sqlcomercial,
-                       "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and dsczona='SUR GRANDE' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and flag<>'k' and eliminar<>'E'  
-                                ")
+surgrande<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='SUR GRANDE' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and flag<>'k' and eliminar<>'E'"))
+
+
 
 surgrande[is.na(surgrande)] <- 0
 
@@ -381,9 +372,9 @@ colnames(surgrande)<-c("categorizacion","surgrande")
 
 #SUR ORIENTE
 
-suroriente<-sqlQuery(sqlcomercial,
-                       "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and dsczona='SUR ORIENTE' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and flag<>'k'  
-                                ")
+suroriente<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='SUR ORIENTE' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and flag<>'k' and eliminar<>'E'"))
+
+
 
 suroriente[is.na(suroriente)] <- 0
 
@@ -407,9 +398,9 @@ colnames(suroriente)<-c("categorizacion","suroriente")
 ##########################################################################################
 
 #AB
-vendedorab<-sqlQuery(sqlcomercial,
-                       "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and dsczonadet='AB'  
-                                ")
+vendedorab<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczonadet='AB' "))
+
+
 
 vendedorab[is.na(vendedorab)] <- 0
 
@@ -427,9 +418,9 @@ vendedorab<-vendedorab %>%
 colnames(vendedorab)<-c("categorizacion","vendedorab")
 
 #EM
-vendedorem<-sqlQuery(sqlcomercial,
-                     "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and dsczonadet='em'  
-                                ")
+vendedorem<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczonadet='em' "))
+
+
 
 vendedorem[is.na(vendedorem)] <- 0
 
@@ -447,9 +438,9 @@ vendedorem<-vendedorem %>%
 colnames(vendedorem)<-c("categorizacion","vendedorem")
 
 #JA
-vendedorja<-sqlQuery(sqlcomercial,
-                     "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and dsczonadet='ja'  
-                                ")
+vendedorja<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczonadet='ja' "))
+
+
 
 vendedorja[is.na(vendedorja)] <- 0
 
@@ -467,9 +458,9 @@ vendedorja<-vendedorja %>%
 colnames(vendedorja)<-c("categorizacion","vendedorja")
 
 #KM
-vendedorkm<-sqlQuery(sqlcomercial,
-                     "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/11/2021' and dsczonadet='km'  
-                                ")
+vendedorkm<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczonadet='km'"))
+
+
 
 vendedorkm[is.na(vendedorkm)] <- 0
 
@@ -510,98 +501,97 @@ dflistverticalordenado<-dflistvertical %>%
 #agregando columnas faltantes al cuadro
 
 Nombre<- c(
-"Maria del Carmen Cherre",
-"Gilberto Izasiga",
-"Isabel Seminario",
-"Guillermo Curiel",
-"Rossana Urbina",
-"Erika Moreno",
-"Miluska Oliveros",
-"Max Zapata",
-"Maritza Alarcon",
-"Eliud Ferrari",
-"Gustavo Masias",
-"Yuri Ludeña",
-"Carlos Cuadra",
-"Roberto Ludeña",
-"Patricia Lazarte",
-"James Ayala",
-"Alina Baca",
-"Sahalomee Iparraguirre",
-"Elizabeth Molero"
+  "Maria del Carmen Cherre",
+  "Gilberto Izasiga",
+  "Isabel Seminario",
+  "Guillermo Curiel",
+  "Rossana Urbina",
+  "Erika Moreno",
+  "Miluska Oliveros",
+  "Max Zapata",
+  "Maritza Alarcon",
+  "Eliud Ferrari",
+  "Gustavo Masias",
+  "Yuri Ludeña",
+  "Carlos Cuadra",
+  "Roberto Ludeña",
+  "Patricia Lazarte",
+  "James Ayala",
+  "Alina Baca",
+  "Sahalomee Iparraguirre",
+  "Elizabeth Molero"
 )
 Nombre<-as.data.frame(Nombre)
 
-class(Equipo)
 
 Correo<-c(
-"mcherre@lansier.com",
-"gizasiga@lansier.com",
-"iseminario@lansier.com",
-"gcuriel@lansier.com",
-"rurbina@lansier.com",
-"emoreno@lansier.com",
-"goliveros@lansier.com",
-"mzapata@lansier.com",
-"malarcon@lansier.com",
-"eferrari@lansier.com",
-"gmasias@lansier.com",
-"yludena@lansier.com",
-"ccuadra@lansier.com",
-"rjimenez@lansier.com",
-"clazarte@lansier.com",
-"jayala@lansier.com",
-"rbaca@lansier.com",
-"siparraguirre@lansier.com",
-"emolero@lansier.com"
+  "mcherre@lansier.com",
+  "gizasiga@lansier.com",
+  "iseminario@lansier.com",
+  "gcuriel@lansier.com",
+  "rurbina@lansier.com",
+  "emoreno@lansier.com",
+  "goliveros@lansier.com",
+  "mzapata@lansier.com",
+  "malarcon@lansier.com",
+  "eferrari@lansier.com",
+  "gmasias@lansier.com",
+  "yludena@lansier.com",
+  "ccuadra@lansier.com",
+  "rjimenez@lansier.com",
+  "clazarte@lansier.com",
+  "jayala@lansier.com",
+  "rbaca@lansier.com",
+  "siparraguirre@lansier.com",
+  "emolero@lansier.com"
 )
 Correo<-as.data.frame(Correo)
 
 
 Equipo<- c(
-"RRMM",
-"RRMM",
-"RRMM",
-"RRMM",
-"RRMM",
-"RRMM",
-"RRMM",
-"RRMM",
-"RRMM",
-"RRMM",
-"RRMM",
-"RRMM",
-"RRMM",
-"RRMM",
-"RRMM",
-"VENDEDORES",
-"VENDEDORES",
-"VENDEDORES",
-"VENDEDORES"
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "VENDEDORES",
+  "VENDEDORES",
+  "VENDEDORES",
+  "VENDEDORES"
 )
 Equipo<-as.data.frame(Equipo)
 
 
 Zona<- c(
-"LIMA CALLAO AZUL",
-"LIMA ESTE AZUL",
-"LIMA NORTE AZUL",
-"LIMA OESTE AZUL",
-"LIMA SUR AZUL",
-"LIMA CALLAO ROJO",
-"LIMA ESTE ROJO",
-"LIMA NORTE ROJO",
-"LIMA OESTE ROJO",
-"LIMA SUR ROJO",
-"NORTE GRANDE A",
-"NORTE GRANDE B",
-"NORTE MEDIO",
-"SUR GRANDE",
-"SUR ORIENTE",
-"LIMA NORTE",
-"LIMA CALLAO",
-"LIMA SUR",
-"LIMA ESTE"
+  "LIMA CALLAO AZUL",
+  "LIMA ESTE AZUL",
+  "LIMA NORTE AZUL",
+  "LIMA OESTE AZUL",
+  "LIMA SUR AZUL",
+  "LIMA CALLAO ROJO",
+  "LIMA ESTE ROJO",
+  "LIMA NORTE ROJO",
+  "LIMA OESTE ROJO",
+  "LIMA SUR ROJO",
+  "NORTE GRANDE A",
+  "NORTE GRANDE B",
+  "NORTE MEDIO",
+  "SUR GRANDE",
+  "SUR ORIENTE",
+  "LIMA NORTE",
+  "LIMA CALLAO",
+  "LIMA SUR",
+  "LIMA ESTE"
 )
 Zona<-as.data.frame(Zona)
 
@@ -612,12 +602,12 @@ colnames(dffinal)<-c("Equipo","Zona","Correo","Nombre","Total","Premium","Lanzam
 
 # con este comando convertirmos a numeros las columnas que eran caracteres
 dffinal<-transform(dffinal, Total = round(as.numeric(Total),1),
-          Premium = round(as.numeric(Premium),1),
-          Lanzamiento = round(as.numeric(Lanzamiento),1),
-          Ocuvial = round(as.numeric(Ocuvial),1),
-          Normal = round(as.numeric(Normal),1),
-          Masivo = round(as.numeric(Masivo),1)
-          )
+                   Premium = round(as.numeric(Premium),1),
+                   Lanzamiento = round(as.numeric(Lanzamiento),1),
+                   Ocuvial = round(as.numeric(Ocuvial),1),
+                   Normal = round(as.numeric(Normal),1),
+                   Masivo = round(as.numeric(Masivo),1)
+)
 
 
 # sapply(dffinal, mode)  # con este comando verificamos que las categorias son numeros y no caracteres ahora
@@ -646,61 +636,30 @@ write_xlsx(dffinal,"C:\\Users\\LBarrios\\Documents\\datapresentacion.xlsx")
 
 
 
-###############################################################################
-## HACIENDO DINAMICAS LAS FECHAS PARA NO ESTAR CAMBIANDO CADA MES O CADA AÑO ##
-###############################################################################
+##############################################################################
+# HACIENDO DINAMICAS LAS FECHAS PARA NO ESTAR CAMBIANDO CADA MES O CADA AÑO ##
+##############################################################################
 
-#LIMA CALLAO
-library(lubridate)
-rm(azullimacallaoprototipo)
+#con Ctrl+ shift+ C sobre un area seleccionada lo convierto en comentario 
 
-azullimacallaoprototipo<-sqlQuery(sqlcomercial,paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA CALLAO' and flag<>'k' ")
-                         )
-
-azullimacallaoprototipo[is.na(azullimacallaoprototipo)] <- 0
-
-azullimacallaoprototipo<-azullimacallaoprototipo %>% 
-  group_by(categorizacion) %>%
-  summarize(ppsol=sum(ppsol),soles=sum(subtotal)) 
-
-azullimacallaoprototipo<-azullimacallaoprototipo %>%
-  add_row(soles=sum(azullimacallaoprototipo$soles),categorizacion="TOTALES",ppsol=sum(azullimacallaoprototipo$ppsol))
-
-azullimacallaoprototipo<-azullimacallaoprototipo %>% 
-  mutate(ratio=soles/ppsol*100) %>%
-  select(categorizacion,ratio) 
-
-colnames(azullimacallaoprototipo)<-c("categorizacion","azullimacallaoprototipo")
-
-
-
-
-
-##################33333
-library(readxl)
-
-data<-read_xlsx("datapresentacion.xlsx")
-data<-as.data.frame(data)
-class(data)
-typeof(data)
-summarise(data)
-class(data[1,5])
-
-
-
-class(as.numeric(data[1:3,5]))
-
-#con merge puedo unir horizontalmente 2 bases de datos
-#merge(azullimacallao,nortegrandea,by = "categorizacion")
-
-#cbind(azullimacallao,nortegrandea) 
-
-#right_join(azullimacallao,nortegrandea)
-#left_join(azullimacallao,nortegrandea)
-
-#full_join(azullimacallao,nortegrandea)
-
-#a<-full_join(azullimacallao,azullimaeste)
-#full_join(a,azullimanorte)
-
-
+# LIMA CALLAO
+# library(lubridate)
+# rm(azullimacallaoprototipo)
+# 
+# azullimacallaoprototipo<-sqlQuery(sqlcomercial,paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA CALLAO' and flag<>'k' ")
+#                          )
+# 
+# azullimacallaoprototipo[is.na(azullimacallaoprototipo)] <- 0
+# 
+# azullimacallaoprototipo<-azullimacallaoprototipo %>%
+#   group_by(categorizacion) %>%
+#   summarize(ppsol=sum(ppsol),soles=sum(subtotal))
+# 
+# azullimacallaoprototipo<-azullimacallaoprototipo %>%
+#   add_row(soles=sum(azullimacallaoprototipo$soles),categorizacion="TOTALES",ppsol=sum(azullimacallaoprototipo$ppsol))
+# 
+# azullimacallaoprototipo<-azullimacallaoprototipo %>%
+#   mutate(ratio=soles/ppsol*100) %>%
+#   select(categorizacion,ratio)
+# 
+# colnames(azullimacallaoprototipo)<-c("categorizacion","azullimacallaoprototipo")
