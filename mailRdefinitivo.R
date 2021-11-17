@@ -12,7 +12,7 @@ PASS<- as.character("chopper210397")
 data<-read_xlsx("C:/Users/User/Documents/datapresentacion.xlsx")
 
 dia <-day( Sys.Date())
-mes<-if(month(Sys.Date()) == 10){"Octubre"}
+mes<-if(month(Sys.Date()) == 11){"Noviembre"}
 for(i in 1:nrow(data)){
   equipo = data$Equipo[i]
   zona = data$Zona[i]
