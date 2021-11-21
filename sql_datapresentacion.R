@@ -20,6 +20,7 @@ library(writexl)
 library(RODBC)
 library(dplyr)
 library(tidyr)
+library(lubridate)
 # video de youtube para crear la conexion ODBC necesaria para conectarse con R
 # https://youtu.be/7I10VuMi0cI
 
@@ -78,9 +79,9 @@ sqlcomercial<-odbcConnect("SQLuis",uid = "sa",pwd = "Comercial.2020") ##
 ############## AZUL AZUL AZUL AZUL AZUL AZUL AZUL ########################################
 ##########################################################################################
 ##########################################################################################
-
+# rm(azullimacallao)
 #LIMA CALLAO
-azullimacallao<-sqlQuery(sqlcomercial,paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA CALLAO' and flag<>'k'and eliminar<>'E' "))
+azullimacallao<-sqlQuery(sqlcomercial,paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA CALLAO' and (flag<>'k' or flag is NULL) "))
 
 azullimacallao[is.na(azullimacallao)] <- 0
 
@@ -100,7 +101,7 @@ colnames(azullimacallao)<-c("categorizacion","azullimacallao")
 
 
 #LIMA ESTE
-azullimaeste<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA este' and flag<>'k'and eliminar<>'E'  "))
+azullimaeste<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA este' and (flag<>'k' or flag is NULL) and eliminar<>'E'  "))
 
 azullimaeste[is.na(azullimaeste)] <- 0
 
@@ -118,7 +119,7 @@ azullimaeste<-azullimaeste %>%
 colnames(azullimaeste)<-c("categorizacion","azullimaeste")
 
 #LIMA NORTE
-azullimanorte<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA norte' and flag<>'k'and eliminar<>'E' "))
+azullimanorte<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA norte' and (flag<>'k' or flag is NULL) and eliminar<>'E' "))
 
 azullimanorte[is.na(azullimanorte)] <- 0
 
@@ -136,7 +137,7 @@ azullimanorte<-azullimanorte %>%
 colnames(azullimanorte)<-c("categorizacion","azullimanorte")
 
 #LIMA OESTE
-azullimaoeste<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA oeste' and flag<>'k'and eliminar<>'E' "))
+azullimaoeste<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA oeste' and (flag<>'k' or flag is NULL)and eliminar<>'E' "))
 
 
 azullimaoeste[is.na(azullimaoeste)] <- 0
@@ -155,7 +156,7 @@ azullimaoeste<-azullimaoeste %>%
 colnames(azullimaoeste)<-c("categorizacion","azullimaoeste")
 
 #LIMA SUR
-azullimasur<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA sur' and flag<>'k'and eliminar<>'E' "))
+azullimasur<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA sur'  and (flag<>'k' or flag is NULL) and eliminar<>'E' "))
 
 
 azullimasur[is.na(azullimasur)] <- 0
@@ -179,7 +180,7 @@ colnames(azullimasur)<-c("categorizacion","azullimasur")
 ##########################################################################################
 ##########################################################################################
 #LIMA CALLAO
-rojolimacallao<-sqlQuery(sqlcomercial,paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA CALLAO' and flag<>'k' and eliminar<>'E'") )
+rojolimacallao<-sqlQuery(sqlcomercial,paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA CALLAO' and (flag<>'k' or flag is NULL) and eliminar<>'E'") )
 
 
 
@@ -199,7 +200,7 @@ rojolimacallao<-rojolimacallao %>%
 colnames(rojolimacallao)<-c("categorizacion","rojolimacallao")
 
 #LIMA ESTE
-rojolimaeste<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA este' and flag<>'k' and eliminar<>'E'"))
+rojolimaeste<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA este' and (flag<>'k' or flag is NULL) and eliminar<>'E'"))
 
 
 
@@ -219,7 +220,7 @@ rojolimaeste<-rojolimaeste %>%
 colnames(rojolimaeste)<-c("categorizacion","rojolimaeste")
 
 #LIMA NORTE
-rojolimanorte<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA norte' and flag<>'k' and eliminar<>'E'")  )
+rojolimanorte<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA norte' and (flag<>'k' or flag is NULL) and eliminar<>'E'")  )
 
 
 
@@ -239,7 +240,7 @@ rojolimanorte<-rojolimanorte %>%
 colnames(rojolimanorte)<-c("categorizacion","rojolimanorte")
 
 #LIMA OESTE
-rojolimaoeste<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA oeste' and flag<>'k' and eliminar<>'E'"))
+rojolimaoeste<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA oeste' and (flag<>'k' or flag is NULL) and eliminar<>'E'"))
 
 
 
@@ -259,7 +260,7 @@ rojolimaoeste<-rojolimaoeste %>%
 colnames(rojolimaoeste)<-c("categorizacion","rojolimaoeste")
 
 #LIMA SUR
-rojolimasur<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA sur' and flag<>'k' and eliminar<>'E'") )
+rojolimasur<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA sur' and (flag<>'k' or flag is NULL) and eliminar<>'E'") )
 
 
 
@@ -290,7 +291,7 @@ colnames(rojolimasur)<-c("categorizacion","rojolimasur")
 
 #NORTE GRANDE A
 
-nortegrandea<-sqlQuery(sqlcomercial, paste("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='NORTE GRANDE A' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and flag<>'k' and eliminar<>'E'"))
+nortegrandea<-sqlQuery(sqlcomercial, paste("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='NORTE GRANDE A' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and (flag<>'k' or flag is NULL) and eliminar<>'E'"))
 
 
 nortegrandea[is.na(nortegrandea)] <- 0
@@ -310,7 +311,7 @@ colnames(nortegrandea)<-c("categorizacion","nortegrandea")
 
 #NORTE GRANDE B
 
-nortegrandeb<-sqlQuery(sqlcomercial, paste0( "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='NORTE GRANDE B' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and flag<>'k' and eliminar<>'E'  "))
+nortegrandeb<-sqlQuery(sqlcomercial, paste0( "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='NORTE GRANDE B' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and (flag<>'k' or flag is NULL) and eliminar<>'E'  "))
 
 
 
@@ -331,7 +332,7 @@ colnames(nortegrandeb)<-c("categorizacion","nortegrandeb")
 
 #NORTE MEDIO
 
-nortemedio<-sqlQuery(sqlcomercial, paste0( "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='NORTE MEDIO' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and flag<>'k' and eliminar<>'E'"))
+nortemedio<-sqlQuery(sqlcomercial, paste0( "select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='NORTE MEDIO' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and (flag<>'k' or flag is NULL) and eliminar<>'E'"))
 
 
 
@@ -351,7 +352,7 @@ nortemedio<-nortemedio %>%
 colnames(nortemedio)<-c("categorizacion","nortemedio")
 
 #SUR GRANDE
-surgrande<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='SUR GRANDE' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and flag<>'k' and eliminar<>'E'"))
+surgrande<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='SUR GRANDE' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and (flag<>'k' or flag is NULL) and eliminar<>'E'"))
 
 
 
@@ -372,7 +373,7 @@ colnames(surgrande)<-c("categorizacion","surgrande")
 
 #SUR ORIENTE
 
-suroriente<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='SUR ORIENTE' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and flag<>'k' and eliminar<>'E'"))
+suroriente<-sqlQuery(sqlcomercial, paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='SUR ORIENTE' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN')and (flag<>'k' or flag is NULL) and eliminar<>'E'"))
 
 
 
@@ -613,7 +614,7 @@ dffinal<-transform(dffinal, Total = round(as.numeric(Total),1),
 # sapply(dffinal, mode)  # con este comando verificamos que las categorias son numeros y no caracteres ahora
 # head(dffinal)
 #con el siguiente codigo se crea un excel con el nombre de nuestro dataframe
-write_xlsx(dffinal,"C:\\Users\\LBarrios\\Documents\\datapresentacion.xlsx")
+write_xlsx(dffinal,"C:\\Users\\LBarrios\\Desktop\\SQLDATAEXTRACTOR\\mailrdata\\datapresentacion.xlsx")
 
 ####################################################################################################################################################
 ############         #      #                ###### ### ## # #    #     #    #     #     # #    #     ##############################################
