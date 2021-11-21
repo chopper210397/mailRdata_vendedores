@@ -616,6 +616,8 @@ dffinal<-transform(dffinal, Total = round(as.numeric(Total),1),
 #con el siguiente codigo se crea un excel con el nombre de nuestro dataframe
 write_xlsx(dffinal,"C:\\Users\\LBarrios\\Desktop\\SQLDATAEXTRACTOR\\mailrdata\\datapresentacion.xlsx")
 
+
+rm(list=ls()) 
 ####################################################################################################################################################
 ############         #      #                ###### ### ## # #    #     #    #     #     # #    #     ##############################################
 ############  ###### #  ##  #  #####     ##  ###### ### ## # # #### ### # ## # ### # ### # # ## # ##################################################
@@ -634,33 +636,516 @@ write_xlsx(dffinal,"C:\\Users\\LBarrios\\Desktop\\SQLDATAEXTRACTOR\\mailrdata\\d
 ####################################################################################################################################################
 ####################################################################################################################################################
 ####################################################################################################################################################
+## DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS ###
+## DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS ###
+## DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS ###
+## DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS ###
+## DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS ###
+## DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS ###
+## DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS ###
+## DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS ###
+## DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS ###
+## DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS ###
+## DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS ###
+## DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS  DATA VENTAS ###
+####################################################################################################################################################
+####################################################################################################################################################
+####################################################################################################################################################
+####################################################################################################################################################
+####################################################################################################################################################
+
+#AQUI EL SCRIPT CREA EL MISMO EXCEL PERO CON OTRO NOMBRE Y CON LA DATA DE VENTAS
+
+sqlcomercial<-odbcConnect("SQLuis",uid = "sa",pwd = "Comercial.2020") ##
+
+##########################################################################################
+##########################################################################################
+############## AZUL AZUL AZUL AZUL AZUL AZUL AZUL ########################################
+##########################################################################################
+##########################################################################################
+# rm(azullimacallao)
+#LIMA CALLAO
+azullimacallao<-sqlQuery(sqlcomercial,paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA CALLAO' and (flag<>'k' or flag is NULL) "))
+
+azullimacallao[is.na(azullimacallao)] <- 0
+
+azullimacallao<-azullimacallao %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+azullimacallao<-azullimacallao %>%
+  add_row(soles=sum(azullimacallao$soles),categorizacion="TOTALES")
+
+colnames(azullimacallao)<-c("categorizacion","azullimacallao")
 
 
 
-##############################################################################
-# HACIENDO DINAMICAS LAS FECHAS PARA NO ESTAR CAMBIANDO CADA MES O CADA AÑO ##
-##############################################################################
+#LIMA ESTE
+azullimaeste<-sqlQuery(sqlcomercial, paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA este' and (flag<>'k' or flag is NULL) and eliminar<>'E'  "))
 
-#con Ctrl+ shift+ C sobre un area seleccionada lo convierto en comentario 
+azullimaeste[is.na(azullimaeste)] <- 0
 
-# LIMA CALLAO
-# library(lubridate)
-# rm(azullimacallaoprototipo)
-# 
-# azullimacallaoprototipo<-sqlQuery(sqlcomercial,paste0("select subtotal,ppsol,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA CALLAO' and flag<>'k' ")
-#                          )
-# 
-# azullimacallaoprototipo[is.na(azullimacallaoprototipo)] <- 0
-# 
-# azullimacallaoprototipo<-azullimacallaoprototipo %>%
-#   group_by(categorizacion) %>%
-#   summarize(ppsol=sum(ppsol),soles=sum(subtotal))
-# 
-# azullimacallaoprototipo<-azullimacallaoprototipo %>%
-#   add_row(soles=sum(azullimacallaoprototipo$soles),categorizacion="TOTALES",ppsol=sum(azullimacallaoprototipo$ppsol))
-# 
-# azullimacallaoprototipo<-azullimacallaoprototipo %>%
-#   mutate(ratio=soles/ppsol*100) %>%
-#   select(categorizacion,ratio)
-# 
-# colnames(azullimacallaoprototipo)<-c("categorizacion","azullimacallaoprototipo")
+azullimaeste<-azullimaeste %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+azullimaeste<-azullimaeste %>%
+  add_row(soles=sum(azullimaeste$soles),categorizacion="TOTALES")
+
+
+
+colnames(azullimaeste)<-c("categorizacion","azullimaeste")
+
+#LIMA NORTE
+azullimanorte<-sqlQuery(sqlcomercial, paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA norte' and (flag<>'k' or flag is NULL) and eliminar<>'E' "))
+
+azullimanorte[is.na(azullimanorte)] <- 0
+
+azullimanorte<-azullimanorte %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+azullimanorte<-azullimanorte %>%
+  add_row(soles=sum(azullimanorte$soles),categorizacion="TOTALES")
+
+colnames(azullimanorte)<-c("categorizacion","azullimanorte")
+
+#LIMA OESTE
+azullimaoeste<-sqlQuery(sqlcomercial, paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA oeste' and (flag<>'k' or flag is NULL)and eliminar<>'E' "))
+
+
+azullimaoeste[is.na(azullimaoeste)] <- 0
+
+azullimaoeste<-azullimaoeste %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+azullimaoeste<-azullimaoeste %>%
+  add_row(soles=sum(azullimaoeste$soles),categorizacion="TOTALES")
+
+
+
+colnames(azullimaoeste)<-c("categorizacion","azullimaoeste")
+
+#LIMA SUR
+azullimasur<-sqlQuery(sqlcomercial, paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'ROJO' and dsczona='LIMA sur'  and (flag<>'k' or flag is NULL) and eliminar<>'E' "))
+
+
+azullimasur[is.na(azullimasur)] <- 0
+
+azullimasur<-azullimasur %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+azullimasur<-azullimasur %>%
+  add_row(soles=sum(azullimasur$soles),categorizacion="TOTALES")
+
+
+
+colnames(azullimasur)<-c("categorizacion","azullimasur")
+
+##########################################################################################
+##########################################################################################
+##############  ROJO  ROJO  ROJO  ROJO  ROJO  ROJO  ROJO #################################
+##########################################################################################
+##########################################################################################
+#LIMA CALLAO
+rojolimacallao<-sqlQuery(sqlcomercial,paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA CALLAO' and (flag<>'k' or flag is NULL) and eliminar<>'E'") )
+
+
+
+rojolimacallao[is.na(rojolimacallao)] <- 0
+
+rojolimacallao<-rojolimacallao %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+rojolimacallao<-rojolimacallao %>%
+  add_row(soles=sum(rojolimacallao$soles),categorizacion="TOTALES")
+
+
+colnames(rojolimacallao)<-c("categorizacion","rojolimacallao")
+
+#LIMA ESTE
+rojolimaeste<-sqlQuery(sqlcomercial, paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA este' and (flag<>'k' or flag is NULL) and eliminar<>'E'"))
+
+
+
+rojolimaeste[is.na(rojolimaeste)] <- 0
+
+rojolimaeste<-rojolimaeste %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+rojolimaeste<-rojolimaeste %>%
+  add_row(soles=sum(rojolimaeste$soles),categorizacion="TOTALES")
+
+
+colnames(rojolimaeste)<-c("categorizacion","rojolimaeste")
+
+#LIMA NORTE
+rojolimanorte<-sqlQuery(sqlcomercial, paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA norte' and (flag<>'k' or flag is NULL) and eliminar<>'E'")  )
+
+
+
+rojolimanorte[is.na(rojolimanorte)] <- 0
+
+rojolimanorte<-rojolimanorte %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+rojolimanorte<-rojolimanorte %>%
+  add_row(soles=sum(rojolimanorte$soles),categorizacion="TOTALES")
+
+
+
+colnames(rojolimanorte)<-c("categorizacion","rojolimanorte")
+
+#LIMA OESTE
+rojolimaoeste<-sqlQuery(sqlcomercial, paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA oeste' and (flag<>'k' or flag is NULL) and eliminar<>'E'"))
+
+
+
+rojolimaoeste[is.na(rojolimaoeste)] <- 0
+
+rojolimaoeste<-rojolimaoeste %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+rojolimaoeste<-rojolimaoeste %>%
+  add_row(soles=sum(rojolimaoeste$soles),categorizacion="TOTALES")
+
+colnames(rojolimaoeste)<-c("categorizacion","rojolimaoeste")
+
+#LIMA SUR
+rojolimasur<-sqlQuery(sqlcomercial, paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and colorequi<>'AZUL' and dsczona='LIMA sur' and (flag<>'k' or flag is NULL) and eliminar<>'E'") )
+
+
+
+rojolimasur[is.na(rojolimasur)] <- 0
+
+rojolimasur<-rojolimasur %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+rojolimasur<-rojolimasur %>%
+  add_row(soles=sum(rojolimasur$soles),categorizacion="TOTALES")
+
+
+colnames(rojolimasur)<-c("categorizacion","rojolimasur")
+
+
+###########################################
+
+##########################################################################################
+##########################################################################################
+##############  PROVINCIA  PROVINCIA   PROVINCIA  PROVINCIA ##############################
+##########################################################################################
+##########################################################################################
+# a veces pone como values algunos pero es porque mi query del sql "select....etc" no esta bien hecho, o algun parentesis no esta bien.   
+
+#NORTE GRANDE A
+
+nortegrandea<-sqlQuery(sqlcomercial, paste("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='NORTE GRANDE A' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and (flag<>'k' or flag is NULL) and eliminar<>'E'"))
+
+
+nortegrandea[is.na(nortegrandea)] <- 0
+
+nortegrandea<-nortegrandea %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+nortegrandea<-nortegrandea %>%
+  add_row(soles=sum(nortegrandea$soles),categorizacion="TOTALES")
+
+colnames(nortegrandea)<-c("categorizacion","nortegrandea")
+
+#NORTE GRANDE B
+
+nortegrandeb<-sqlQuery(sqlcomercial, paste0( "select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='NORTE GRANDE B' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and (flag<>'k' or flag is NULL) and eliminar<>'E'  "))
+
+
+
+nortegrandeb[is.na(nortegrandeb)] <- 0
+
+nortegrandeb<-nortegrandeb %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+nortegrandeb<-nortegrandeb %>%
+  add_row(soles=sum(nortegrandeb$soles),categorizacion="TOTALES")
+
+
+colnames(nortegrandeb)<-c("categorizacion","nortegrandeb")
+
+#NORTE MEDIO
+
+nortemedio<-sqlQuery(sqlcomercial, paste0( "select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='NORTE MEDIO' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and (flag<>'k' or flag is NULL) and eliminar<>'E'"))
+
+
+
+nortemedio[is.na(nortemedio)] <- 0
+
+nortemedio<-nortemedio %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+nortemedio<-nortemedio %>%
+  add_row(soles=sum(nortemedio$soles),categorizacion="TOTALES")
+
+colnames(nortemedio)<-c("categorizacion","nortemedio")
+
+#SUR GRANDE
+surgrande<-sqlQuery(sqlcomercial, paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='SUR GRANDE' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN') and (flag<>'k' or flag is NULL) and eliminar<>'E'"))
+
+
+
+surgrande[is.na(surgrande)] <- 0
+
+surgrande<-surgrande %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+surgrande<-surgrande %>%
+  add_row(soles=sum(surgrande$soles),categorizacion="TOTALES")
+
+
+
+colnames(surgrande)<-c("categorizacion","surgrande")
+
+#SUR ORIENTE
+
+suroriente<-sqlQuery(sqlcomercial, paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczona='SUR ORIENTE' and (colorequi='AZUL' OR colorequi='ROJO' OR colorequi='COMUN')and (flag<>'k' or flag is NULL) and eliminar<>'E'"))
+
+
+
+suroriente[is.na(suroriente)] <- 0
+
+suroriente<-suroriente %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+suroriente<-suroriente %>%
+  add_row(soles=sum(suroriente$soles),categorizacion="TOTALES")
+
+
+colnames(suroriente)<-c("categorizacion","suroriente")
+
+##########################################################################################
+##########################################################################################
+############## VENDEDORES VENDEDORES VENDEDORES VENDEDORES ###############################
+##########################################################################################
+##########################################################################################
+
+#AB
+vendedorab<-sqlQuery(sqlcomercial, paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczonadet='AB' "))
+
+
+
+vendedorab[is.na(vendedorab)] <- 0
+
+vendedorab<-vendedorab %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+vendedorab<-vendedorab %>%
+  add_row(soles=sum(vendedorab$soles),categorizacion="TOTALES")
+
+
+
+colnames(vendedorab)<-c("categorizacion","vendedorab")
+
+#EM
+vendedorem<-sqlQuery(sqlcomercial, paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczonadet='em' "))
+
+
+
+vendedorem[is.na(vendedorem)] <- 0
+
+vendedorem<-vendedorem %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+vendedorem<-vendedorem %>%
+  add_row(soles=sum(vendedorem$soles),categorizacion="TOTALES")
+
+
+colnames(vendedorem)<-c("categorizacion","vendedorem")
+
+#JA
+vendedorja<-sqlQuery(sqlcomercial, paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczonadet='ja' "))
+
+
+
+vendedorja[is.na(vendedorja)] <- 0
+
+vendedorja<-vendedorja %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+vendedorja<-vendedorja %>%
+  add_row(soles=sum(vendedorja$soles),categorizacion="TOTALES")
+
+
+
+colnames(vendedorja)<-c("categorizacion","vendedorja")
+
+#KM
+vendedorkm<-sqlQuery(sqlcomercial, paste0("select subtotal,categorizacion from Venta_Lansier where periodo = '01/",month(Sys.Date()),"/",year(Sys.Date()),"' and dsczonadet='km'"))
+
+
+
+vendedorkm[is.na(vendedorkm)] <- 0
+
+vendedorkm<-vendedorkm %>% 
+  group_by(categorizacion) %>%
+  summarize(soles=sum(subtotal)) 
+
+vendedorkm<-vendedorkm %>%
+  add_row(soles=sum(vendedorkm$soles),categorizacion="TOTALES")
+
+
+
+colnames(vendedorkm)<-c("categorizacion","vendedorkm")
+
+################################################################################################################
+# uniendo la base de datos 
+################################################################################################################
+
+
+#con el siguiente codigo puedo unir todas las bases de datos asi de ez
+df_list <- list(azullimacallao, azullimaeste,azullimanorte,azullimaoeste,azullimasur,rojolimacallao,rojolimaeste,rojolimanorte,rojolimaoeste,rojolimasur,nortegrandea,nortegrandeb,nortemedio,surgrande,suroriente,vendedorja,vendedorab,vendedorkm,vendedorem)
+dflist<-Reduce(function(x, y) merge(x, y, all=TRUE), df_list, accumulate=FALSE)
+
+#con este codigo dejo la tabla como deseo tenerla
+dflistvertical<- t(dflist)
+dflistvertical<-as.data.frame( t(dflist))
+colnames(dflistvertical)<-dflistvertical[1,]
+dflistvertical<-dflistvertical [-1,]
+
+dflistverticalordenado<-dflistvertical %>% 
+  select(TOTALES,PREMIUM,LANZAMIENTO,OCUVIAL,NORMAL,MASIVO)
+
+
+
+
+#agregando columnas faltantes al cuadro
+
+Nombre<- c(
+  "Maria del Carmen Cherre",
+  "Gilberto Izasiga",
+  "Isabel Seminario",
+  "Guillermo Curiel",
+  "Rossana Urbina",
+  "Erika Moreno",
+  "Miluska Oliveros",
+  "Max Zapata",
+  "Maritza Alarcon",
+  "Eliud Ferrari",
+  "Gustavo Masias",
+  "Yuri Ludeña",
+  "Carlos Cuadra",
+  "Roberto Ludeña",
+  "Patricia Lazarte",
+  "James Ayala",
+  "Alina Baca",
+  "Sahalomee Iparraguirre",
+  "Elizabeth Molero"
+)
+Nombre<-as.data.frame(Nombre)
+
+
+Correo<-c(
+  "mcherre@lansier.com",
+  "gizasiga@lansier.com",
+  "iseminario@lansier.com",
+  "gcuriel@lansier.com",
+  "rurbina@lansier.com",
+  "emoreno@lansier.com",
+  "goliveros@lansier.com",
+  "mzapata@lansier.com",
+  "malarcon@lansier.com",
+  "eferrari@lansier.com",
+  "gmasias@lansier.com",
+  "yludena@lansier.com",
+  "ccuadra@lansier.com",
+  "rjimenez@lansier.com",
+  "clazarte@lansier.com",
+  "jayala@lansier.com",
+  "rbaca@lansier.com",
+  "siparraguirre@lansier.com",
+  "emolero@lansier.com"
+)
+Correo<-as.data.frame(Correo)
+
+
+Equipo<- c(
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "RRMM",
+  "VENDEDORES",
+  "VENDEDORES",
+  "VENDEDORES",
+  "VENDEDORES"
+)
+Equipo<-as.data.frame(Equipo)
+
+
+Zona<- c(
+  "LIMA CALLAO AZUL",
+  "LIMA ESTE AZUL",
+  "LIMA NORTE AZUL",
+  "LIMA OESTE AZUL",
+  "LIMA SUR AZUL",
+  "LIMA CALLAO ROJO",
+  "LIMA ESTE ROJO",
+  "LIMA NORTE ROJO",
+  "LIMA OESTE ROJO",
+  "LIMA SUR ROJO",
+  "NORTE GRANDE A",
+  "NORTE GRANDE B",
+  "NORTE MEDIO",
+  "SUR GRANDE",
+  "SUR ORIENTE",
+  "LIMA NORTE",
+  "LIMA CALLAO",
+  "LIMA SUR",
+  "LIMA ESTE"
+)
+Zona<-as.data.frame(Zona)
+
+
+#combinando con los nuevos vectores que converti en data frames que son datos fijos no dinamicos como el nombre,correo,zona,etc
+dffinal<-data.frame(Equipo,Zona,Correo,Nombre,dflistverticalordenado)
+colnames(dffinal)<-c("Equipo","Zona","Correo","Nombre","Total","Premium","Lanzamiento","Ocuvial","Normal","Masivo")
+
+# con este comando convertirmos a numeros las columnas que eran caracteres
+dffinal<-transform(dffinal, Total = round(as.numeric(Total),1),
+                   Premium = round(as.numeric(Premium),1),
+                   Lanzamiento = round(as.numeric(Lanzamiento),1),
+                   Ocuvial = round(as.numeric(Ocuvial),1),
+                   Normal = round(as.numeric(Normal),1),
+                   Masivo = round(as.numeric(Masivo),1)
+)
+
+
+# sapply(dffinal, mode)  # con este comando verificamos que las categorias son numeros y no caracteres ahora
+# head(dffinal)
+#con el siguiente codigo se crea un excel con el nombre de nuestro dataframe
+write_xlsx(dffinal,"C:\\Users\\LBarrios\\Desktop\\SQLDATAEXTRACTOR\\mailrdata\\datapresentacionventas.xlsx")
+
+#con esto ya tenemos creadas las dos datas que usaremos para la pagina web
+
+rm(list=ls()) 
