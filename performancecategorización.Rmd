@@ -22,7 +22,8 @@ library(colorspace)
 library(RODBC)
 sqlcomercial<-odbcConnect("SQLuis",uid = "sa",pwd = "Comercial.2020")
 fecharcarga<-sqlQuery(sqlcomercial,"select * from Fechas_Carga")
-data<-read_xlsx("C:\\Users\\LBarrios\\Desktop\\SQLDATAEXTRACTOR\\mailrdata\\datapresentacion.xlsx") #borre todo el path que decia C/USERS,etc y lo deje solo en el nombre de el archivo, asi ya no importa donde lo corra siempre y cuando este en el wd
+data<-read_xlsx("C:\\Users\\LBarrios\\Desktop\\mailRdata_vendedores\\datapresentacion.xlsx")
+#borre todo el path que decia C/USERS,etc y lo deje solo en el nombre de el archivo, asi ya no importa donde lo corra siempre y cuando este en el wd
 tabla<-data %>% select(-3) %>% select(-1)
 for (i in 3:8) {
   tabla[,i]<-tabla[,i]

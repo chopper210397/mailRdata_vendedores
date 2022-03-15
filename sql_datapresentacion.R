@@ -21,6 +21,8 @@ library(RODBC)
 library(dplyr)
 library(tidyr)
 library(lubridate)
+library(tidyverse)
+library(plyr)
 # video de youtube para crear la conexion ODBC necesaria para conectarse con R
 # https://youtu.be/7I10VuMi0cI
 
@@ -39,7 +41,7 @@ library(lubridate)
 
 
 ########################################################################
-###################### CONEXIÓN CON EL SQL SERVER ######################
+###################### CONEXI?N CON EL SQL SERVER ######################
 ########################################################################
 ########################################################################
 ########################################################################
@@ -47,7 +49,7 @@ sqlcomercial<-odbcConnect("SQLuis",uid = "sa",pwd = "Comercial.2020") ##
 ########################################################################
 ########################################################################
 ########################################################################
-###################### CONEXIÓN CON EL SQL SERVER ######################
+###################### CONEXI?N CON EL SQL SERVER ######################
 ########################################################################
 
 
@@ -62,11 +64,11 @@ sqlcomercial<-odbcConnect("SQLuis",uid = "sa",pwd = "Comercial.2020") ##
 
 ############## HALLANDO LOS VALORES PARA CADA PORCENTAJE ##################
 
-#cargando los porcentajes de cumplimiento por zona, periodo y categorización
+#cargando los porcentajes de cumplimiento por zona, periodo y categorizaci?n
 #premiumazullimacallao<-sqlQuery(sqlcomercial,
 #                                "select subtotal,ppsol from Venta_Lansier where periodo = '01/11/2021' and colorequi ='AZUL' and dsczona='LIMA CALLAO' and categorizacion='PREMIUM' and flag<>'K'
 #                                ")
-#convirtiendo NA´s en cero
+#convirtiendo NA?s en cero
 #premiumazullimacallao[is.na(premiumazullimacallao)] <- 0
 #a<-sum(premiumazullimacallao$subtotal)
 #b<-sum(premiumazullimacallao$ppsol)
@@ -85,9 +87,8 @@ azullimacallao<-sqlQuery(sqlcomercial,paste0("select subtotal,ppsol,categorizaci
 
 azullimacallao[is.na(azullimacallao)] <- 0
 
-azullimacallao<-azullimacallao %>% 
-  group_by(categorizacion) %>%
-  summarize(ppsol=sum(ppsol),soles=sum(subtotal)) 
+
+azullimacallao<-azullimacallao %>% group_by(categorizacion) %>% summarize(ppsol=sum(ppsol),soles=sum(subtotal)) 
 
 azullimacallao<-azullimacallao %>%
   add_row(soles=sum(azullimacallao$soles),categorizacion="TOTALES",ppsol=sum(azullimacallao$ppsol))
@@ -513,7 +514,7 @@ Nombre<- c(
   "Maritza Alarcon",
   "Eliud Ferrari",
   "Gustavo Masias",
-  "Yuri Ludeña",
+  "Yuri Lude?a",
   "Carlos Cuadra",
   "Roberto Jimenez",
   "Patricia Lazarte",
@@ -628,7 +629,7 @@ rm(list=ls())
 ############  ##     #  ##  #  ##      ####  ######                                                   ##############################################
 ############         #      #                #######################################################################################################
 ####################################################################################################################################################
-######################### HASTA AQUI TERMINA MI CODIGO, LO DEMÁS SON PRUEBAS MIAS ##################################################################
+######################### HASTA AQUI TERMINA MI CODIGO, LO DEM?S SON PRUEBAS MIAS ##################################################################
 ####################################################################################################################################################
 ####################################################################################################################################################
 ####################################################################################################################################################
@@ -1043,7 +1044,7 @@ Nombre<- c(
   "Maritza Alarcon",
   "Eliud Ferrari",
   "Gustavo Masias",
-  "Yuri Ludeña",
+  "Yuri Lude?a",
   "Carlos Cuadra",
   "Roberto Jimenez",
   "Patricia Lazarte",
